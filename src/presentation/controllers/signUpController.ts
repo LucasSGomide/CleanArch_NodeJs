@@ -11,7 +11,12 @@ export class SignUpController {
     handle(httpRequest: IHttpRequest): IHttpResponse {
         console.log(this.test)
 
-        const requiredAttributes = ['name', 'email', 'password']
+        const requiredAttributes = [
+            'name',
+            'email',
+            'password',
+            'passwordConfirmation',
+        ]
 
         const missingAttribute = requiredAttributes
             .map((attribute) => {
