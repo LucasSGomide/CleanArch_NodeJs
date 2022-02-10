@@ -1,17 +1,12 @@
 import { IHttpResponse } from '../protocols/IHttpResponse'
 import { IHttpRequest } from '../protocols/IHttpRequest'
-import { MissingParamError } from '../errors/MissingParamError'
+import { IController } from '../protocols/IController'
 
+import { MissingParamError } from '../errors/MissingParamError'
 import { badRequest } from '../helpers/HttpHelpers'
 
-export class SignUpController {
-    constructor(public test: string = 'Avoiding Eslint') {
-        this.test = test
-    }
-
+export class SignUpController implements IController {
     handle(httpRequest: IHttpRequest): IHttpResponse {
-        console.log(this.test)
-
         const requiredAttributes = [
             'name',
             'email',

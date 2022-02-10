@@ -12,8 +12,10 @@
     "plugins": ["@typescript-eslint"],
     "rules": {
         "semi": [1, "never"],
+        "no-unused-vars": "off",
         "no-console": "off",
         "indent": ["error", 4],
+        "import/prefer-default-export": "off",
         "import/extensions": [
             "error",
             "ignorePackages",
@@ -22,7 +24,7 @@
                 "ts": "never"
             }
         ],
-        "import/prefer-default-export": "off"
+        "class-methods-use-this": "off"
     },
     "settings": {
         "import/resolver": {
