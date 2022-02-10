@@ -1,10 +1,12 @@
-import { IHttpResponse } from '../protocols/IHttpResponse'
-import { IHttpRequest } from '../protocols/IHttpRequest'
-import { IController } from '../protocols/IController'
-import { IEmailValidator } from '../protocols/IEmailValidator'
+import {
+    IHttpResponse,
+    IHttpRequest,
+    IController,
+    IEmailValidator,
+} from '../protocols'
 
-import { MissingParamError } from '../errors/MissingParamError'
-import { InvalidParamError } from '../errors/InvalidParamError'
+import { MissingParamError, InvalidParamError } from '../errors'
+
 import { badRequest, serverError } from '../helpers/HttpHelpers'
 
 export class SignUpController implements IController {
