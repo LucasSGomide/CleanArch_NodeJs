@@ -1,9 +1,11 @@
+import { HttpResponse, HttpRequest } from '../protocols/http'
+
 export class SignUpController {
     constructor(public test: string = 'Avoiding Eslint') {
         this.test = test
     }
 
-    handle(httpRequest: any): any {
+    handle(httpRequest: HttpRequest): HttpResponse {
         console.log(this.test, httpRequest)
         if (!httpRequest.body.name) {
             return {
