@@ -4,9 +4,7 @@ import {
     IController,
     IEmailValidator,
 } from '../protocols'
-
 import { MissingParamError, InvalidParamError } from '../errors'
-
 import { badRequest, serverError } from '../helpers/HttpHelpers'
 
 export class SignUpController implements IController {
