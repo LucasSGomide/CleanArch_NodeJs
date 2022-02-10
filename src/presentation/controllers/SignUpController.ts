@@ -1,11 +1,19 @@
 import { IHttpResponse } from '../protocols/IHttpResponse'
 import { IHttpRequest } from '../protocols/IHttpRequest'
 import { IController } from '../protocols/IController'
+import { IEmailValidator } from '../protocols/IEmailValidator'
 
 import { MissingParamError } from '../errors/MissingParamError'
+import { InvalidParamError } from '../errors/InvalidParamError'
 import { badRequest } from '../helpers/HttpHelpers'
 
 export class SignUpController implements IController {
+    private readonly emailValidator: IEmailValidator
+
+    constructor(emailValidator: IEmailValidator) {
+        this.emailValidator = emailValidator
+    }
+
     handle(httpRequest: IHttpRequest): IHttpResponse {
         const requiredAttributes = [
             'name',
@@ -29,6 +37,12 @@ export class SignUpController implements IController {
 
         if (missingAttribute) {
             return missingAttribute
+        }
+
+        const isEmailValid = this.emailValidator.isValid(httpRequest.body.email)
+
+        if (!isEmailValid) {
+            return badRequest(new InvalidParamError('email'))
         }
 
         return {
