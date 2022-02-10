@@ -7,6 +7,7 @@ export class SignUpController {
         console.log(this.test, httpRequest)
         return {
             statusCode: 400,
+            body: new Error('Missing param: name'),
         }
     }
 }
