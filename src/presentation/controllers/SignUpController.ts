@@ -1,7 +1,8 @@
-import { IHttpRequest, IHttpResponse } from '../protocols/http'
-import { MissingParamError } from '../errors/missingParamError'
+import { IHttpResponse } from '../protocols/IHttpResponse'
+import { IHttpRequest } from '../protocols/IHttpRequest'
+import { MissingParamError } from '../errors/MissingParamError'
 
-import { badRequest } from '../helpers/httpHelpers'
+import { badRequest } from '../helpers/HttpHelpers'
 
 export class SignUpController {
     constructor(public test: string = 'Avoiding Eslint') {
