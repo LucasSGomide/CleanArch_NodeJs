@@ -5,7 +5,6 @@ import { IEmailValidator } from '../protocols/IEmailValidator'
 
 import { MissingParamError } from '../errors/MissingParamError'
 import { InvalidParamError } from '../errors/InvalidParamError'
-import { ServerError } from '../errors/ServerError'
 import { badRequest, serverError } from '../helpers/HttpHelpers'
 
 export class SignUpController implements IController {
@@ -48,7 +47,7 @@ export class SignUpController implements IController {
                 return badRequest(new InvalidParamError('email'))
             }
         } catch (error) {
-            return serverError(new ServerError())
+            return serverError()
         }
 
         return {
