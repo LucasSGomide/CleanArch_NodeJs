@@ -6,35 +6,49 @@ import {
 } from '../protocols'
 import { MissingParamError, InvalidParamError } from '../errors'
 import { badRequest, serverError } from '../helpers/HttpHelpers'
+import { ICreateAccountUseCase } from '../../domain/useCases/ICreateAccountUseCase'
 
 export class SignUpController implements IController {
     private readonly emailValidator: IEmailValidator
 
-    constructor(emailValidator: IEmailValidator) {
+    private readonly createAccountUseCase: ICreateAccountUseCase
+
+    constructor(
+        emailValidator: IEmailValidator,
+        createAccountUseCase: ICreateAccountUseCase
+    ) {
         this.emailValidator = emailValidator
+        this.createAccountUseCase = createAccountUseCase
     }
 
     handle(httpRequest: IHttpRequest): IHttpResponse {
         try {
-            const { body } = httpRequest
-
             const invalidField = this.findMissingFields(httpRequest)
 
             if (invalidField) {
                 return badRequest(new MissingParamError(invalidField))
             }
 
-            const isEmailValid = this.emailValidator.isValid(body.email)
+            const { name, email, password, passwordConfirmation } =
+                httpRequest.body
+
+            const isEmailValid = this.emailValidator.isValid(email)
 
             if (!isEmailValid) {
                 return badRequest(new InvalidParamError('email'))
             }
 
-            const isValidPassword = body.password === body.passwordConfirmation
+            const isValidPassword = password === passwordConfirmation
 
             if (!isValidPassword) {
                 return badRequest(new InvalidParamError('passwordConfirmation'))
             }
+
+            this.createAccountUseCase.create({
+                name,
+                email,
+                password,
+            })
         } catch (error) {
             return serverError()
         }
