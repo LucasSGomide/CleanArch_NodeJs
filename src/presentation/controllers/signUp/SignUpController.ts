@@ -3,10 +3,10 @@ import {
     IHttpRequest,
     IController,
     IEmailValidator,
-} from '../protocols'
-import { MissingParamError, InvalidParamError } from '../errors'
-import { badRequest, serverError } from '../helpers/HttpHelpers'
-import { ICreateAccountUseCase } from '../../domain/useCases/ICreateAccountUseCase'
+    ICreateAccountUseCase,
+} from './SignUpProtocols'
+import { MissingParamError, InvalidParamError } from '../../errors'
+import { badRequest, serverError } from '../../helpers/HttpHelpers'
 
 export class SignUpController implements IController {
     private readonly emailValidator: IEmailValidator

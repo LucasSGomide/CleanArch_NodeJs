@@ -1,12 +1,17 @@
 import { SignUpController } from '../SignUpController'
-import { MissingParamError, InvalidParamError, ServerError } from '../../errors'
-import { IEmailValidator } from '../../protocols'
 
-import { AccountModel } from '../../../domain/models/AccountModel'
 import {
+    IEmailValidator,
     ICreateAccountUseCase,
     CreateAccountModel,
-} from '../../../domain/useCases/ICreateAccountUseCase'
+    AccountModel,
+} from '../SignUpProtocols'
+
+import {
+    MissingParamError,
+    InvalidParamError,
+    ServerError,
+} from '../../../errors'
 
 const makeCreateAccount = (): ICreateAccountUseCase => {
     class CreateAccountStub implements ICreateAccountUseCase {
