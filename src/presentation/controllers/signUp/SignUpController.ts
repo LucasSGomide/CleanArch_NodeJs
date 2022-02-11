@@ -6,7 +6,7 @@ import {
     ICreateAccountUseCase,
 } from './SignUpProtocols'
 import { MissingParamError, InvalidParamError } from '../../errors'
-import { badRequest, serverError } from '../../helpers/HttpHelpers'
+import { badRequest, serverError, success } from '../../helpers/HttpHelpers'
 
 export class SignUpController implements IController {
     private readonly emailValidator: IEmailValidator
@@ -44,18 +44,15 @@ export class SignUpController implements IController {
                 return badRequest(new InvalidParamError('passwordConfirmation'))
             }
 
-            this.createAccountUseCase.create({
+            const createdAccount = this.createAccountUseCase.create({
                 name,
                 email,
                 password,
             })
+
+            return success(createdAccount)
         } catch (error) {
             return serverError()
-        }
-
-        return {
-            statusCode: 200,
-            body: {},
         }
     }
 
