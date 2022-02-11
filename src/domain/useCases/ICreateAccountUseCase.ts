@@ -7,5 +7,5 @@ export type CreateAccountModel = {
 }
 
 export interface ICreateAccountUseCase {
-    create(account: CreateAccountModel): AccountModel
+    create(account: CreateAccountModel): Promise<AccountModel>
 }

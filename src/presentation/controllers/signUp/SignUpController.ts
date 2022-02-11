@@ -21,7 +21,7 @@ export class SignUpController implements IController {
         this.createAccountUseCase = createAccountUseCase
     }
 
-    handle(httpRequest: IHttpRequest): IHttpResponse {
+    async handle(httpRequest: IHttpRequest): Promise<IHttpResponse> {
         try {
             const invalidField = this.findMissingFields(httpRequest)
 
@@ -44,7 +44,7 @@ export class SignUpController implements IController {
                 return badRequest(new InvalidParamError('passwordConfirmation'))
             }
 
-            const createdAccount = this.createAccountUseCase.create({
+            const createdAccount = await this.createAccountUseCase.create({
                 name,
                 email,
                 password,
