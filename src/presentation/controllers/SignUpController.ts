@@ -16,33 +16,16 @@ export class SignUpController implements IController {
 
     handle(httpRequest: IHttpRequest): IHttpResponse {
         try {
-            const requiredAttributes = [
-                'name',
-                'email',
-                'password',
-                'passwordConfirmation',
-            ]
+            const { body } = httpRequest
 
-            const missingAttribute = requiredAttributes
-                .map((attribute) => {
-                    if (!httpRequest.body[attribute]) {
-                        return badRequest(new MissingParamError(attribute))
-                    }
+            const invalidField = this.findMissingFields(httpRequest)
 
-                    return {
-                        statusCode: 200,
-                        body: {},
-                    }
-                })
-                .find((attribute) => attribute.statusCode === 400)
-
-            if (missingAttribute) {
-                return missingAttribute
+            if (invalidField) {
+                return badRequest(new MissingParamError(invalidField))
             }
 
-            const isEmailValid = this.emailValidator.isValid(
-                httpRequest.body.email
-            )
+            const isEmailValid = this.emailValidator.isValid(body.email)
+
             if (!isEmailValid) {
                 return badRequest(new InvalidParamError('email'))
             }
@@ -54,5 +37,24 @@ export class SignUpController implements IController {
             statusCode: 200,
             body: {},
         }
+    }
+
+    private findMissingFields(httpRequest: IHttpRequest): string | undefined {
+        const requiredAttributes = [
+            'name',
+            'email',
+            'password',
+            'passwordConfirmation',
+        ]
+
+        return requiredAttributes
+            .map((attribute) => {
+                if (!httpRequest.body[attribute]) {
+                    return attribute
+                }
+
+                return ''
+            })
+            .find((attribute) => requiredAttributes.includes(attribute))
     }
 }
