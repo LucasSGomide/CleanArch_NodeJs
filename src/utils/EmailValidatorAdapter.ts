@@ -1,7 +1,8 @@
+import validator from 'validator'
 import { IEmailValidator } from '../presentation/protocols/IEmailValidator'
 
 export class EmailValidatorAdapter implements IEmailValidator {
     isValid(email: string): boolean {
-        return false
+        return validator.isEmail(email)
     }
 }
