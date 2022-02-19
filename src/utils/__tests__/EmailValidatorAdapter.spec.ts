@@ -1,13 +1,15 @@
 import validator from 'validator'
 import { EmailValidatorAdapter } from '../EmailValidatorAdapter'
 
-describe('EmailValidatorAdapter', () => {
-    jest.mock('validator', () => ({
-        isEmail(): boolean {
-            return true
-        },
-    }))
+jest.mock('validator', () => ({
+    isEmail(): boolean {
+        return true
+    },
+}))
 
+const makeSut = (): EmailValidatorAdapter => new EmailValidatorAdapter()
+
+describe('EmailValidatorAdapter', () => {
     test('Should return false if validator returns false', () => {
         // O que importa para esse teste é saber que se a lib do validator retornar falso, o método isValid do EmailValidatorAdapter vai retornar falso também.
         // Não importa como a lib valida as entradas, o que é importante é o retorno estar correto dentro do método do SUT.
@@ -15,7 +17,7 @@ describe('EmailValidatorAdapter', () => {
 
         jest.spyOn(validator, 'isEmail').mockReturnValueOnce(false)
 
-        const sut = new EmailValidatorAdapter()
+        const sut = makeSut()
 
         const isValid = sut.isValid('invalid_email@mail.com')
 
@@ -23,7 +25,7 @@ describe('EmailValidatorAdapter', () => {
     })
 
     test('Should return true if validator returns true', () => {
-        const sut = new EmailValidatorAdapter()
+        const sut = makeSut()
 
         const isValid = sut.isValid('valid_email@mail.com')
 
@@ -31,7 +33,7 @@ describe('EmailValidatorAdapter', () => {
     })
 
     test('Should call validator with correct email', () => {
-        const sut = new EmailValidatorAdapter()
+        const sut = makeSut()
 
         const isEmailSpy = jest.spyOn(validator, 'isEmail')
 
