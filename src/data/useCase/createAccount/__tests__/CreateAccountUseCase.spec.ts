@@ -1,16 +1,31 @@
+import { IEncrypter } from '../../../protocols/IEncrypter'
 import { CreateAccountUseCase } from '../CreateAccountUseCase'
+
+type SutTypes = {
+    sut: CreateAccountUseCase
+    encrypterStub: IEncrypter
+}
+
+const makeSut = (): SutTypes => {
+    class EncrypterStub {
+        async encrypt(value: string): Promise<string> {
+            return Promise.resolve('hashed_password')
+        }
+    }
+
+    const encrypterStub = new EncrypterStub()
+    const sut = new CreateAccountUseCase(encrypterStub)
+
+    return {
+        sut,
+        encrypterStub,
+    }
+}
 
 describe('CreateAccountUseCase', () => {
     test('Should call Encrypter with correct password', async () => {
-        class EncrypterStub {
-            async encrypt(value: string): Promise<string> {
-                return Promise.resolve('hashed_password')
-            }
-        }
+        const { sut, encrypterStub } = makeSut()
 
-        const encrypterStub = new EncrypterStub()
-
-        const sut = new CreateAccountUseCase(encrypterStub)
         const encryptSpy = jest.spyOn(encrypterStub, 'encrypt')
 
         const accountData = {
@@ -23,4 +38,6 @@ describe('CreateAccountUseCase', () => {
 
         expect(encryptSpy).toHaveBeenCalledWith('valid_password')
     })
+
+    test('Should receive an hased password from CreateAccountUseCase', () => {})
 })
